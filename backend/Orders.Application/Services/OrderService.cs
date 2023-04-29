@@ -52,7 +52,7 @@ namespace Orders.Application.Services
             {
                 Order order = await orders.GetById(id);
                 if ((int)order.Status >= (int)Status.SubmittedForDelivery)
-                    return new BaseResponce<bool> { StatusCode = HttpStatusCode.NotModified, Description = $"Нельзя редактировать заказ в статусе {order.Status.GetDisplayName}" };
+                    return new BaseResponce<bool> { StatusCode = HttpStatusCode.Forbidden, Description = $"Нельзя редактировать заказ в статусе {order.Status.GetDisplayName}" };
                 await orders.Delete(id);
                 return new BaseResponce<bool> { StatusCode = HttpStatusCode.OK,Data=true};
             }

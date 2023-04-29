@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Orders.Application.Models;
 using Orders.Application.Models.DTOs;
 using Oreders.Domain.Entity;
 using Oreders.Domain.Interfaces;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Orders.Application.Services
 {
-    public class ProductService : IProductService<ProductDTO>
+    public class ProductService : IUnivercalService<ProductDTO>
     {
         private readonly IRepository<Product> products;
         readonly IMapper mapper;
@@ -43,16 +44,15 @@ namespace Orders.Application.Services
         {
             try
             {
+                Product product = await products.GetById(id);
+                if (product is null)
+                    return new BaseResponce<bool> { StatusCode = HttpStatusCode.NotFound, Description = "Продукт не найден" };
                 await products.Delete(id);
                 return new BaseResponce<bool> { StatusCode = HttpStatusCode.OK, Data = true, Description = "Успех" };
             }
-            catch (ArgumentNullException ex)
+            catch (Exception)
             {
-                return new BaseResponce<bool> { StatusCode = HttpStatusCode.NotFound, Data = false, Description = ex.Message };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponce<bool> { StatusCode = HttpStatusCode.BadGateway, Description = ex.Message };
+                return new BaseResponce<bool> { StatusCode = HttpStatusCode.BadGateway, Description = "Произошла непредвиденная ошибка" };
             }
         }
 
@@ -61,16 +61,14 @@ namespace Orders.Application.Services
             try
             {
                 var productList = await products.GetAll();
+                if (productList is null || !productList.Any())
+                    return new BaseResponce<IEnumerable<ProductDTO>> { StatusCode = HttpStatusCode.NotFound, Description = "Продуктов нет" };
                 var dtos = mapper.Map<List<ProductDTO>>(productList);
                 return new BaseResponce<IEnumerable<ProductDTO>> {  StatusCode = HttpStatusCode.OK,Data = dtos };
             }
-            catch (ArgumentNullException ex)
+            catch (Exception)
             {
-                return new BaseResponce<IEnumerable<ProductDTO>> { StatusCode = HttpStatusCode.NotFound, Data = new List<ProductDTO>(), Description = ex.Message };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponce<IEnumerable<ProductDTO>> { StatusCode = HttpStatusCode.BadGateway, Data = new List<ProductDTO>(), Description = ex.Message };
+                return new BaseResponce<IEnumerable<ProductDTO>> { StatusCode = HttpStatusCode.BadGateway, Data = new List<ProductDTO>(), Description = "Произошла непредвиденная ошибка" };
             }
         }
 
@@ -79,12 +77,10 @@ namespace Orders.Application.Services
             try
             {
                 Product product = await products.GetById(id);
+                if (product is null)
+                    return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.NotFound, Description = "Продукт не найден" };
                 ProductDTO productDTO = mapper.Map<ProductDTO>(product);
                 return new BaseResponce<ProductDTO> {  StatusCode = HttpStatusCode.OK, Data = productDTO };
-            }
-            catch (ArgumentNullException ex)
-            {
-                return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.NotFound, Description = ex.Message };
             }
             catch (Exception ex)
             {
@@ -96,6 +92,9 @@ namespace Orders.Application.Services
         {
             try
             {
+                Product oldProduct = await products.GetById(product.Id);
+                if (oldProduct is null)
+                    return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.NotFound, Description = "Продукт не найден" };
                 Product updatedProduct = mapper.Map<Product>(product);
                 await products.Update(updatedProduct); 
                 product=mapper.Map<ProductDTO>(updatedProduct);

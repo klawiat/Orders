@@ -12,9 +12,9 @@ namespace Orders.WebApi.Controllers
 {
     public class ProductController : Controller
     {
-        readonly IProductService<ProductDTO> productService;
+        readonly IUnivercalService<ProductDTO> productService;
         readonly IMapper mapper;
-        public ProductController(IProductService<ProductDTO> productService,IMapper mapper)
+        public ProductController(IUnivercalService<ProductDTO> productService,IMapper mapper)
         {
             this.productService = productService;
             this.mapper = mapper;

@@ -15,6 +15,6 @@ namespace Oreders.Domain.Interfaces
         public Task<T> Update(T entity);
         public Task<bool> Delete(Guid id);
         //TODO Получше подумать как это реализовать
-        public Task<IEnumerable<T>> GetFiltered(Func<IQueryable<T>, IQueryable<T>> filter);
+        //public Task<IEnumerable<T>> GetFiltered(Func<IQueryable<T>, IQueryable<T>> filter);
     }
 }

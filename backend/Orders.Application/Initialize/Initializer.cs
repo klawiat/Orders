@@ -22,8 +22,8 @@ namespace Orders.Application.Initialize
         }
         public static void InitializeServices (this IServiceCollection services)
         {
-            services.AddScoped<IProductService<ProductDTO>, ProductService>();
-            services.AddScoped<IOrderService<OrderDTO>,OrderService>();
+            services.AddScoped<IUnivercalService<ProductDTO>, ProductService>();
+            services.AddScoped<IUnivercalService<OrderDTO>,OrderService>();
         }
     }
 }

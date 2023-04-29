@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oredrs.Infrastructure.Implementations
+namespace Orders.Application.Models
 {
     public class BaseResponce<T> : IResponce<T>
     {

@@ -33,8 +33,6 @@ namespace Oredrs.Infrastructure.Implementations.Repositories
         public async Task<bool> Delete(Guid id)
         {
             Product product = await products.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted==false);
-            if (product is null) 
-                throw new ArgumentNullException("Не наден продукт для удаления");
             product.IsDeleted = true;
             products.Update(product);
             await context.SaveChangesAsync();
@@ -44,27 +42,23 @@ namespace Oredrs.Infrastructure.Implementations.Repositories
         public async Task<IEnumerable<Product>> GetAll()
         {
             List<Product> productsList = await products.Where(x=>x.IsDeleted==false).ToListAsync();
-            if (productsList is null || !productsList.Any())
-                throw new ArgumentNullException("В таблице отсутствуют товары");
             return productsList;
         }
 
         public async Task<Product> GetById(Guid id)
         {
             Product product = await products.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted==false);
-            if (product is null)
-                throw new ArgumentNullException("Такого прлдукта не существует");
             return product;
         }
 
-        public async Task<IEnumerable<Product>> GetFiltered(Func<IQueryable<Product>, IQueryable<Product>> filter)
+        /*public async Task<IEnumerable<Product>> GetFiltered(Func<IQueryable<Product>, IQueryable<Product>> filter)
         {
             List<Product> productsList = await filter(products.Where(x=>x.IsDeleted==false).AsQueryable()).ToListAsync();
             if (productsList is not null && productsList.Any())
                 return productsList;
             else
                 throw new ArgumentNullException("Продукты с такими параметрами не найдены");
-        }
+        }*/
 
         public async Task<Product> Update(Product entity)
         {

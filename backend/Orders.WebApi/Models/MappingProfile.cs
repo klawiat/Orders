@@ -10,10 +10,10 @@ namespace Orders.WebApi.Models
         public MappingProfile()
         {
             this.CreateMap<RelationDTO, RelationViewModel>()
-                .ForMember(x => x.Id, opt => opt.MapFrom(x=>x.ProductId))
+                .ForMember(x => x.id, opt => opt.MapFrom(x=>x.ProductId))
                 .ForMember(x => x.uty, opt => opt.MapFrom(x=>x.Count));
             this.CreateMap<RelationViewModel, RelationDTO>()
-                .ForMember(x => x.ProductId, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.ProductId, opt => opt.MapFrom(x => x.id))
                 .ForMember(x => x.Count, opt => opt.MapFrom(x => x.uty));
             this.CreateMap<ProductViewModel, ProductDTO>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(o => o.Id))

@@ -32,11 +32,11 @@ namespace Orders.WebApi.Controllers
                     return Ok(orders);
                 }
                 else
-                    return StatusCode((int)responce.StatusCode, responce.Description);
+                    return StatusCode((int)responce.StatusCode, new { result = false, description = responce.Description });
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest(new { description = "Непредвиденная ошибка" });
             }
         }
 
@@ -56,11 +56,11 @@ namespace Orders.WebApi.Controllers
                     return Ok(model);
                 }
                 else
-                    return StatusCode((int)responce.StatusCode, responce.Description);
+                    return StatusCode((int)responce.StatusCode, new { description = responce.Description });
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest(new { description = "Непредвиденная ошибка" });
             }
         }
 
@@ -77,17 +77,16 @@ namespace Orders.WebApi.Controllers
                     if (responce.StatusCode == HttpStatusCode.OK)
                         return Ok(mapper.Map<OrderViewModel>(responce.Data));
                     else
-                        return StatusCode((int)responce.StatusCode, responce.Description);
+                        return StatusCode((int)responce.StatusCode, new { description = responce.Description });
                 }
                 else
                 {
-                    ModelState.AddModelError("", "BadRequest");
-                    return BadRequest();
+                    throw new Exception();
                 }
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest(new { description = "Непредвиденная ошибка" });
             }
         }
 
@@ -110,17 +109,16 @@ namespace Orders.WebApi.Controllers
                         return Ok(mapper.Map<OrderViewModel>(order));
                     }
                     else
-                        return StatusCode((int)responce.StatusCode, responce.Description);
+                        return StatusCode((int)responce.StatusCode, new { description = responce.Description });
                 }
                 else
                 {
-                    ModelState.AddModelError("", "BadRequest");
-                    return BadRequest();
+                    throw new Exception();
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { description = "Непредвиденная ошибка" });
             }
         }
 
@@ -137,13 +135,13 @@ namespace Orders.WebApi.Controllers
                 if (responce.StatusCode == HttpStatusCode.OK)
                     return Ok();
                 else
-                    return StatusCode((int)responce.StatusCode, responce.Description);
+                    return StatusCode((int)responce.StatusCode, new { description = responce.Description });
             }
             catch (Exception)
             {
-                return BadRequest();
+                return BadRequest(new { description = "Непредвиденная ошибка" });
             }
-            
+
         }
     }
 }

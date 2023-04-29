@@ -23,7 +23,7 @@ namespace Oredrs.Infrastructure
             modelBuilder.Entity<Relation>().HasOne(e => e.Product).WithMany(x => x.Relations).HasForeignKey(x => x.ProductId);
 
             //Установка свойств таблицы заказов
-            modelBuilder.Entity<Order>().Property(x=>x.Created).HasDefaultValueSql("timezone('utc', now())")/*.IsRequired()*/;
+            modelBuilder.Entity<Order>().Property(x=>x.Created).HasDefaultValueSql("timezone('UTC', now())")/*.HasDefaultValueSql("timezone('utc', now())").IsRequired()*/;
             modelBuilder.Entity<Order>().Property(x=>x.IsDeleted).HasDefaultValue(false);
             modelBuilder.Entity<Order>().Property(x=>x.Status).HasDefaultValue(Status.New);
 

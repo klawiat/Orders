@@ -12,8 +12,8 @@ using Oredrs.Infrastructure;
 namespace Oredrs.Infrastructure.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    [Migration("20230425175820_InitializeMigration")]
-    partial class InitializeMigration
+    [Migration("20230429011139_UpdateUtcFormat")]
+    partial class UpdateUtcFormat
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace Oredrs.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 4, 25, 17, 58, 20, 426, DateTimeKind.Utc).AddTicks(5880));
+                        .HasDefaultValueSql("timezone('UTC', now())");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,9 @@ namespace Oredrs.Infrastructure.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
 
@@ -71,21 +73,21 @@ namespace Oredrs.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d0dc7ca6-78d4-423a-bd55-457f566f8b5c"),
+                            Id = new Guid("98830bb2-b024-478c-ba44-89dea64947d4"),
                             IsDeleted = false,
-                            Name = "RandomName"
+                            Name = "Ложки"
                         },
                         new
                         {
-                            Id = new Guid("cfe7b970-91ad-4ed7-896d-bedf6f70f42c"),
+                            Id = new Guid("349fdab8-3e16-47aa-9a45-333430ea8436"),
                             IsDeleted = false,
-                            Name = "RandomName1"
+                            Name = "Вилки"
                         },
                         new
                         {
-                            Id = new Guid("205bf706-f81f-414b-864a-fa2de132a3a8"),
+                            Id = new Guid("71182654-e033-43c7-9075-6b3732a8bfc0"),
                             IsDeleted = false,
-                            Name = "RandomName2"
+                            Name = "Ножи"
                         });
                 });
 

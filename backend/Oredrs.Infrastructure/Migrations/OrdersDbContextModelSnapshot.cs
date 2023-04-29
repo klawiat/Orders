@@ -31,7 +31,7 @@ namespace Oredrs.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("timezone('utc', now())");
+                        .HasDefaultValueSql("timezone('UTC', now())");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -70,19 +70,19 @@ namespace Oredrs.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b90d4802-daed-470e-af58-d2489b54b6a3"),
+                            Id = new Guid("98830bb2-b024-478c-ba44-89dea64947d4"),
                             IsDeleted = false,
                             Name = "Ложки"
                         },
                         new
                         {
-                            Id = new Guid("864187cd-7b34-4be3-97b2-a559d9758dd7"),
+                            Id = new Guid("349fdab8-3e16-47aa-9a45-333430ea8436"),
                             IsDeleted = false,
                             Name = "Вилки"
                         },
                         new
                         {
-                            Id = new Guid("cda1fe8d-3eee-477e-85d8-1695b77b187d"),
+                            Id = new Guid("71182654-e033-43c7-9075-6b3732a8bfc0"),
                             IsDeleted = false,
                             Name = "Ножи"
                         });

@@ -12,8 +12,8 @@ using Oredrs.Infrastructure;
 namespace Oredrs.Infrastructure.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    [Migration("20230429001810_UpdateDateGenerator")]
-    partial class UpdateDateGenerator
+    [Migration("20230429010145_UpdateDefaults")]
+    partial class UpdateDefaults
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace Oredrs.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("timezone('utc', now())");
+                        .HasDefaultValueSql("now() at time zone 'utc'");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -73,19 +73,19 @@ namespace Oredrs.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b90d4802-daed-470e-af58-d2489b54b6a3"),
+                            Id = new Guid("8104c982-5c6e-4e9e-a6d2-6884be72793e"),
                             IsDeleted = false,
                             Name = "Ложки"
                         },
                         new
                         {
-                            Id = new Guid("864187cd-7b34-4be3-97b2-a559d9758dd7"),
+                            Id = new Guid("86f5fc68-bbff-4e7c-b12f-0e17b78ab1cc"),
                             IsDeleted = false,
                             Name = "Вилки"
                         },
                         new
                         {
-                            Id = new Guid("cda1fe8d-3eee-477e-85d8-1695b77b187d"),
+                            Id = new Guid("11145aac-d502-4067-af53-56da26ff9ecb"),
                             IsDeleted = false,
                             Name = "Ножи"
                         });

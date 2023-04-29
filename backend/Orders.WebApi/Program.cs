@@ -18,8 +18,8 @@ namespace Orders.WebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-			#region Строка подключения
             builder.Services.AddControllers().AddJsonOptions(opt=>opt.JsonSerializerOptions.Converters.Add(new DateTimeConverter()));
+			#region Строка подключения
             string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
             string port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
             string database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "OrdersDB";

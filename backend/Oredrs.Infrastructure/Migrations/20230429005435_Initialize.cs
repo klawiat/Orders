@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oredrs.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeMigration : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,8 +18,8 @@ namespace Oredrs.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValue: new DateTime(2023, 4, 25, 17, 58, 20, 426, DateTimeKind.Utc).AddTicks(5880)),
+                    Status = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValueSql: "timezone('utc', now())"),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
@@ -70,9 +70,9 @@ namespace Oredrs.Infrastructure.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("205bf706-f81f-414b-864a-fa2de132a3a8"), "RandomName2" },
-                    { new Guid("cfe7b970-91ad-4ed7-896d-bedf6f70f42c"), "RandomName1" },
-                    { new Guid("d0dc7ca6-78d4-423a-bd55-457f566f8b5c"), "RandomName" }
+                    { new Guid("20ac28f3-7bf8-44eb-aaf3-f2050bd7439c"), "Ложки" },
+                    { new Guid("3779d983-32d9-43a5-9ec5-6ea51a172c82"), "Вилки" },
+                    { new Guid("ff6db325-5cd4-4a58-8460-4f28397a0184"), "Ножи" }
                 });
 
             migrationBuilder.CreateIndex(

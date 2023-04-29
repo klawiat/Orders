@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oredrs.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Update_Database_Politics : Migration
+    public partial class UpdateUtcFormat : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,46 +16,37 @@ namespace Oredrs.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("205bf706-f81f-414b-864a-fa2de132a3a8"));
+                keyValue: new Guid("11145aac-d502-4067-af53-56da26ff9ecb"));
 
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("cfe7b970-91ad-4ed7-896d-bedf6f70f42c"));
+                keyValue: new Guid("8104c982-5c6e-4e9e-a6d2-6884be72793e"));
 
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("d0dc7ca6-78d4-423a-bd55-457f566f8b5c"));
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Status",
-                table: "Oreders",
-                type: "integer",
-                nullable: false,
-                defaultValue: 1,
-                oldClrType: typeof(int),
-                oldType: "integer");
+                keyValue: new Guid("86f5fc68-bbff-4e7c-b12f-0e17b78ab1cc"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Created",
                 table: "Oreders",
                 type: "timestamp with time zone",
                 nullable: true,
-                defaultValue: new DateTime(2023, 4, 26, 12, 35, 28, 939, DateTimeKind.Utc).AddTicks(8008),
+                defaultValueSql: "timezone('UTC', now())",
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp with time zone",
                 oldNullable: true,
-                oldDefaultValue: new DateTime(2023, 4, 25, 17, 58, 20, 426, DateTimeKind.Utc).AddTicks(5880));
+                oldDefaultValueSql: "now() at time zone 'utc'");
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0f5d184c-85b7-427e-acf4-31b62e2c86a3"), "RandomName" },
-                    { new Guid("8e947fa4-3e94-41c8-9f7a-4276517948d2"), "RandomName1" },
-                    { new Guid("f1e812a1-9d45-44f9-a186-2d64625e7089"), "RandomName2" }
+                    { new Guid("349fdab8-3e16-47aa-9a45-333430ea8436"), "Вилки" },
+                    { new Guid("71182654-e033-43c7-9075-6b3732a8bfc0"), "Ножи" },
+                    { new Guid("98830bb2-b024-478c-ba44-89dea64947d4"), "Ложки" }
                 });
         }
 
@@ -65,46 +56,37 @@ namespace Oredrs.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("0f5d184c-85b7-427e-acf4-31b62e2c86a3"));
+                keyValue: new Guid("349fdab8-3e16-47aa-9a45-333430ea8436"));
 
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("8e947fa4-3e94-41c8-9f7a-4276517948d2"));
+                keyValue: new Guid("71182654-e033-43c7-9075-6b3732a8bfc0"));
 
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("f1e812a1-9d45-44f9-a186-2d64625e7089"));
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Status",
-                table: "Oreders",
-                type: "integer",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "integer",
-                oldDefaultValue: 1);
+                keyValue: new Guid("98830bb2-b024-478c-ba44-89dea64947d4"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Created",
                 table: "Oreders",
                 type: "timestamp with time zone",
                 nullable: true,
-                defaultValue: new DateTime(2023, 4, 25, 17, 58, 20, 426, DateTimeKind.Utc).AddTicks(5880),
+                defaultValueSql: "now() at time zone 'utc'",
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp with time zone",
                 oldNullable: true,
-                oldDefaultValue: new DateTime(2023, 4, 26, 12, 35, 28, 939, DateTimeKind.Utc).AddTicks(8008));
+                oldDefaultValueSql: "timezone('UTC', now())");
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("205bf706-f81f-414b-864a-fa2de132a3a8"), "RandomName2" },
-                    { new Guid("cfe7b970-91ad-4ed7-896d-bedf6f70f42c"), "RandomName1" },
-                    { new Guid("d0dc7ca6-78d4-423a-bd55-457f566f8b5c"), "RandomName" }
+                    { new Guid("11145aac-d502-4067-af53-56da26ff9ecb"), "Ножи" },
+                    { new Guid("8104c982-5c6e-4e9e-a6d2-6884be72793e"), "Ложки" },
+                    { new Guid("86f5fc68-bbff-4e7c-b12f-0e17b78ab1cc"), "Вилки" }
                 });
         }
     }

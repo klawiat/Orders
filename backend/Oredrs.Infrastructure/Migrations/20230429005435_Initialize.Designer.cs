@@ -12,8 +12,8 @@ using Oredrs.Infrastructure;
 namespace Oredrs.Infrastructure.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    [Migration("20230426123529_Update_Database_Politics")]
-    partial class Update_Database_Politics
+    [Migration("20230429005435_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace Oredrs.Infrastructure.Migrations
                     b.Property<DateTime?>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2023, 4, 26, 12, 35, 28, 939, DateTimeKind.Utc).AddTicks(8008));
+                        .HasDefaultValueSql("timezone('utc', now())");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -73,21 +73,21 @@ namespace Oredrs.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0f5d184c-85b7-427e-acf4-31b62e2c86a3"),
+                            Id = new Guid("20ac28f3-7bf8-44eb-aaf3-f2050bd7439c"),
                             IsDeleted = false,
-                            Name = "RandomName"
+                            Name = "Ложки"
                         },
                         new
                         {
-                            Id = new Guid("8e947fa4-3e94-41c8-9f7a-4276517948d2"),
+                            Id = new Guid("3779d983-32d9-43a5-9ec5-6ea51a172c82"),
                             IsDeleted = false,
-                            Name = "RandomName1"
+                            Name = "Вилки"
                         },
                         new
                         {
-                            Id = new Guid("f1e812a1-9d45-44f9-a186-2d64625e7089"),
+                            Id = new Guid("ff6db325-5cd4-4a58-8460-4f28397a0184"),
                             IsDeleted = false,
-                            Name = "RandomName2"
+                            Name = "Ножи"
                         });
                 });
 

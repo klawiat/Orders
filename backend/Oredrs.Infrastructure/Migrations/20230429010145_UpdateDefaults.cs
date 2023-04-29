@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oredrs.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDateGenerator : Migration
+    public partial class UpdateDefaults : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,64 +16,24 @@ namespace Oredrs.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("0f5d184c-85b7-427e-acf4-31b62e2c86a3"));
+                keyValue: new Guid("20ac28f3-7bf8-44eb-aaf3-f2050bd7439c"));
 
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("8e947fa4-3e94-41c8-9f7a-4276517948d2"));
+                keyValue: new Guid("3779d983-32d9-43a5-9ec5-6ea51a172c82"));
 
             migrationBuilder.DeleteData(
                 table: "Products",
                 keyColumn: "Id",
-                keyValue: new Guid("f1e812a1-9d45-44f9-a186-2d64625e7089"));
+                keyValue: new Guid("ff6db325-5cd4-4a58-8460-4f28397a0184"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Created",
                 table: "Oreders",
                 type: "timestamp with time zone",
                 nullable: true,
-                defaultValueSql: "timezone('utc', now())",
-                oldClrType: typeof(DateTime),
-                oldType: "timestamp with time zone",
-                oldNullable: true,
-                oldDefaultValue: new DateTime(2023, 4, 26, 12, 35, 28, 939, DateTimeKind.Utc).AddTicks(8008));
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("864187cd-7b34-4be3-97b2-a559d9758dd7"), "Вилки" },
-                    { new Guid("b90d4802-daed-470e-af58-d2489b54b6a3"), "Ложки" },
-                    { new Guid("cda1fe8d-3eee-477e-85d8-1695b77b187d"), "Ножи" }
-                });
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DeleteData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: new Guid("864187cd-7b34-4be3-97b2-a559d9758dd7"));
-
-            migrationBuilder.DeleteData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: new Guid("b90d4802-daed-470e-af58-d2489b54b6a3"));
-
-            migrationBuilder.DeleteData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: new Guid("cda1fe8d-3eee-477e-85d8-1695b77b187d"));
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Created",
-                table: "Oreders",
-                type: "timestamp with time zone",
-                nullable: true,
-                defaultValue: new DateTime(2023, 4, 26, 12, 35, 28, 939, DateTimeKind.Utc).AddTicks(8008),
+                defaultValueSql: "now() at time zone 'utc'",
                 oldClrType: typeof(DateTime),
                 oldType: "timestamp with time zone",
                 oldNullable: true,
@@ -84,9 +44,49 @@ namespace Oredrs.Infrastructure.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("0f5d184c-85b7-427e-acf4-31b62e2c86a3"), "RandomName" },
-                    { new Guid("8e947fa4-3e94-41c8-9f7a-4276517948d2"), "RandomName1" },
-                    { new Guid("f1e812a1-9d45-44f9-a186-2d64625e7089"), "RandomName2" }
+                    { new Guid("11145aac-d502-4067-af53-56da26ff9ecb"), "Ножи" },
+                    { new Guid("8104c982-5c6e-4e9e-a6d2-6884be72793e"), "Ложки" },
+                    { new Guid("86f5fc68-bbff-4e7c-b12f-0e17b78ab1cc"), "Вилки" }
+                });
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DeleteData(
+                table: "Products",
+                keyColumn: "Id",
+                keyValue: new Guid("11145aac-d502-4067-af53-56da26ff9ecb"));
+
+            migrationBuilder.DeleteData(
+                table: "Products",
+                keyColumn: "Id",
+                keyValue: new Guid("8104c982-5c6e-4e9e-a6d2-6884be72793e"));
+
+            migrationBuilder.DeleteData(
+                table: "Products",
+                keyColumn: "Id",
+                keyValue: new Guid("86f5fc68-bbff-4e7c-b12f-0e17b78ab1cc"));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Created",
+                table: "Oreders",
+                type: "timestamp with time zone",
+                nullable: true,
+                defaultValueSql: "timezone('utc', now())",
+                oldClrType: typeof(DateTime),
+                oldType: "timestamp with time zone",
+                oldNullable: true,
+                oldDefaultValueSql: "now() at time zone 'utc'");
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("20ac28f3-7bf8-44eb-aaf3-f2050bd7439c"), "Ложки" },
+                    { new Guid("3779d983-32d9-43a5-9ec5-6ea51a172c82"), "Вилки" },
+                    { new Guid("ff6db325-5cd4-4a58-8460-4f28397a0184"), "Ножи" }
                 });
         }
     }

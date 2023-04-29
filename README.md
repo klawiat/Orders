@@ -68,6 +68,20 @@ backend/Orders.WebApi/bin/publish/net6.0/Orders.WebApi.exe
 Повторить шаги 1-2 из первого способа
 Повторить шаг 1 из третьего способа
 Открыть файл решения в Visual Studio
-В файле programm.cs следует исправить поля: host, port, database, username, password на те, что применены к вашему серверу с бд
+В файле programm.cs следует исправить поля: host, port, database, username, password на те, что применены к вашему серверу с бд.
+Или дописать в файл appsettings.json следующую строку
+```js
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
++  "ConnectionStrings": { "DefaultConnection": "{Строка подключения}" }
+}
+
+```
 Запустить проект Orders.WebApi на своем пк
 

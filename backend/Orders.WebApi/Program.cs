@@ -26,6 +26,7 @@ namespace Orders.WebApi
             string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "Klawiat1324";
             string connection = $"Host={host};Port={port};Database={database};Username={username};Password={password};";
+            connection = builder.Configuration.GetConnectionString("DefaultConnection") ?? connection;
 			#endregion
             builder.Services.AddDbContext<OrdersDbContext>(
                     opt => 

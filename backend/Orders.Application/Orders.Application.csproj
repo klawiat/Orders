@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Collection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Oreders.Domain\Oreders.Domain.csproj" />
     <ProjectReference Include="..\Oredrs.Infrastructure\Oredrs.Infrastructure.csproj" />
   </ItemGroup>

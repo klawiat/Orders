@@ -1,4 +1,6 @@
-﻿using Oreders.Domain.Entity;
+﻿using AutoMapper;
+using Orders.Application.Models.DTOs;
+using Oreders.Domain.Entity;
 using Oreders.Domain.Interfaces;
 using Oreders.Domain.Interfaces.Services;
 using Oredrs.Infrastructure.Implementations;
@@ -12,25 +14,29 @@ using System.Threading.Tasks;
 
 namespace Orders.Application.Services
 {
-    public class ProductService : IProductService
+    public class ProductService : IProductService<ProductDTO>
     {
         private readonly IRepository<Product> products;
-        public ProductService(IRepository<Product> products)
+        readonly IMapper mapper;
+        public ProductService(IRepository<Product> products,IMapper mapper)
         {
             this.products = products;
+            this.mapper = mapper;
         }
 
-        public async Task<IResponce<Product>> CreateAsync(Product product)
+        public async Task<IResponce<ProductDTO>> CreateAsync(ProductDTO product)
         {
             try
             {
-                await products.Create(product);
+                Product newProduct = mapper.Map<Product>(product);
+                await products.Create(newProduct);
+                product = mapper.Map<ProductDTO>(newProduct);
             }
             catch (Exception ex)
             {
-                return new BaseResponce<Product> { StatusCode=HttpStatusCode.BadGateway,Description=ex.Message };
+                return new BaseResponce<ProductDTO> { StatusCode=HttpStatusCode.BadGateway,Description=ex.Message };
             }
-            return new BaseResponce<Product> { StatusCode = HttpStatusCode.OK,Data=product };
+            return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.OK,Data=product };
         }
 
         public async Task<IResponce<bool>> DeleteAsync(Guid id)
@@ -50,50 +56,54 @@ namespace Orders.Application.Services
             }
         }
 
-        public async Task<IResponce<IEnumerable<Product>>> GetAllAsync()
+        public async Task<IResponce<IEnumerable<ProductDTO>>> GetAllAsync()
         {
             try
             {
                 var productList = await products.GetAll();
-                return new BaseResponce<IEnumerable<Product>> {  StatusCode = HttpStatusCode.OK,Data = productList };
+                var dtos = mapper.Map<List<ProductDTO>>(productList);
+                return new BaseResponce<IEnumerable<ProductDTO>> {  StatusCode = HttpStatusCode.OK,Data = dtos };
             }
             catch (ArgumentNullException ex)
             {
-                return new BaseResponce<IEnumerable<Product>> { StatusCode = HttpStatusCode.NotFound, Data = new List<Product>(), Description = ex.Message };
+                return new BaseResponce<IEnumerable<ProductDTO>> { StatusCode = HttpStatusCode.NotFound, Data = new List<ProductDTO>(), Description = ex.Message };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<IEnumerable<Product>> { StatusCode = HttpStatusCode.BadGateway, Data = new List<Product>(), Description = ex.Message };
+                return new BaseResponce<IEnumerable<ProductDTO>> { StatusCode = HttpStatusCode.BadGateway, Data = new List<ProductDTO>(), Description = ex.Message };
             }
         }
 
-        public async Task<IResponce<Product>> GetByIdAsync(Guid id)
+        public async Task<IResponce<ProductDTO>> GetByIdAsync(Guid id)
         {
             try
             {
                 Product product = await products.GetById(id);
-                return new BaseResponce<Product> {  StatusCode = HttpStatusCode.OK, Data = product };
+                ProductDTO productDTO = mapper.Map<ProductDTO>(product);
+                return new BaseResponce<ProductDTO> {  StatusCode = HttpStatusCode.OK, Data = productDTO };
             }
             catch (ArgumentNullException ex)
             {
-                return new BaseResponce<Product> { StatusCode = HttpStatusCode.NotFound, Description = ex.Message };
+                return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.NotFound, Description = ex.Message };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<Product> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
+                return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
             }
         }
 
-        public async Task<IResponce<Product>> UpdateAsync(Product product)
+        public async Task<IResponce<ProductDTO>> UpdateAsync(ProductDTO product)
         {
             try
             {
-                await products.Update(product); 
-                return new BaseResponce<Product> { StatusCode = HttpStatusCode.OK,Data = product };
+                Product updatedProduct = mapper.Map<Product>(product);
+                await products.Update(updatedProduct); 
+                product=mapper.Map<ProductDTO>(updatedProduct);
+                return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.OK,Data = product };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<Product> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
+                return new BaseResponce<ProductDTO> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
             }
         }
     }

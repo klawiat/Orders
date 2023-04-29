@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Orders.Application.Models.DTOs;
 using Orders.WebApi.Models.ViewModels;
 using Oreders.Domain.Entity;
 using Oreders.Domain.Interfaces.Services;
@@ -11,9 +12,9 @@ namespace Orders.WebApi.Controllers
 {
     public class OrdersController : Controller
     {
-        readonly IOrderService orderService;
+        readonly IOrderService<OrderDTO> orderService;
         readonly IMapper mapper;
-        public OrdersController(IOrderService orderService, IMapper mapper)
+        public OrdersController(IOrderService<OrderDTO> orderService, IMapper mapper)
         {
             this.orderService = orderService;
             this.mapper = mapper;
@@ -55,7 +56,7 @@ namespace Orders.WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                Order order = mapper.Map<Order>(model);
+                OrderDTO order = mapper.Map<OrderDTO>(model);
                 var responce = await orderService.CreateAsync(order);
                 if (responce.StatusCode == HttpStatusCode.OK)
                     return Ok(mapper.Map<OrderViewModel>(responce.Data));
@@ -76,10 +77,10 @@ namespace Orders.WebApi.Controllers
             Guid orderId;
             if (!Guid.TryParse(id, out orderId))
                 return BadRequest();
-            model.Id = orderId;
+            model.id = orderId;
             if (ModelState.IsValid)
             {
-                Order order = mapper.Map<Order>(model);
+                OrderDTO order = mapper.Map<OrderDTO>(model);
                 var responce = await orderService.UpdateAsync(order);
                 if (responce.StatusCode == HttpStatusCode.OK)
                 {

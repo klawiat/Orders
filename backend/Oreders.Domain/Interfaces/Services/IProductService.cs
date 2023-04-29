@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Oreders.Domain.Interfaces.Services
 {
-    public interface IProductService
+    public interface IProductService<T>
     {
-        Task<IResponce<Product>> GetByIdAsync(Guid id);
-        Task<IResponce<IEnumerable<Product>>> GetAllAsync();
-        Task<IResponce<Product>> CreateAsync(Product product);
-        Task<IResponce<Product>> UpdateAsync(Product product);
+        Task<IResponce<T>> GetByIdAsync(Guid id);
+        Task<IResponce<IEnumerable<T>>> GetAllAsync();
+        Task<IResponce<T>> CreateAsync(T product);
+        Task<IResponce<T>> UpdateAsync(T product);
         Task<IResponce<bool>> DeleteAsync(Guid id);
     }
 }

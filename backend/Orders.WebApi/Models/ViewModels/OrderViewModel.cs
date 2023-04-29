@@ -9,9 +9,9 @@ namespace Orders.WebApi.Models.ViewModels
 {
     public class OrderViewModel
     {
-        public Guid Id { get; set; }
-        public Status Status { get; set; }
-        public DateTime? Created { get; set; }
-        public List<RelationViewModel> Lines { get; set; }
+        public Guid id { get; set; }
+        public string status { get; set; }
+        public DateTime? created { get; set; }
+        public List<RelationViewModel> lines { get; set; }
     }
 }

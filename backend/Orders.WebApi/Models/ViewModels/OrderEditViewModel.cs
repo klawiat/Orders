@@ -1,11 +1,13 @@
-﻿using Oreders.Domain.Enums;
+﻿using Newtonsoft.Json;
+using Oreders.Domain.Enums;
 
 namespace Orders.WebApi.Models.ViewModels
 {
     public class OrderEditViewModel
     {
-        public Guid Id { get; set; }
-        public Status Status { get; set; }
-        public List<RelationViewModel> Lines { get; set; }
+        [JsonIgnore]
+        public Guid id { get; set; }
+        public string status { get; set; }
+        public List<RelationViewModel> lines { get; set; }
     }
 }

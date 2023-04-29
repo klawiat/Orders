@@ -1,4 +1,6 @@
-﻿using Oreders.Domain.Entity;
+﻿using AutoMapper;
+using Orders.Application.Models.DTOs;
+using Oreders.Domain.Entity;
 using Oreders.Domain.Interfaces;
 using Oreders.Domain.Interfaces.Services;
 using Oredrs.Infrastructure.Implementations;
@@ -11,23 +13,27 @@ using System.Threading.Tasks;
 
 namespace Orders.Application.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService : IOrderService<OrderDTO>
     {
         readonly IRepository<Order> orders;
-        public OrderService(IRepository<Order> orders)
+        readonly IMapper mapper;
+        public OrderService(IRepository<Order> orders,IMapper mapper)
         {
             this.orders = orders;
+            this.mapper = mapper;
         }
-        public async Task<IResponce<Order>> CreateAsync(Order order)
+        public async Task<IResponce<OrderDTO>> CreateAsync(OrderDTO order)
         {
             try
             {
-                await orders.Create(order);
-                return new BaseResponce<Order> { StatusCode = HttpStatusCode.OK,Data=order };
+                Order newOrder = mapper.Map<Order>(order);
+                await orders.Create(newOrder);
+                order=mapper.Map<OrderDTO>(newOrder);
+                return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.OK,Data=order };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<Order> { StatusCode= HttpStatusCode.BadRequest,Description=ex.Message };
+                return new BaseResponce<OrderDTO> { StatusCode= HttpStatusCode.BadRequest,Description=ex.Message };
             }
         }
 
@@ -52,58 +58,62 @@ namespace Orders.Application.Services
             }
         }
 
-        public async Task<IResponce<IEnumerable<Order>>> GetAllAsync()
+        public async Task<IResponce<IEnumerable<OrderDTO>>> GetAllAsync()
         {
             try
             {
                 IEnumerable<Order> orderList = await orders.GetAll();
-                return new BaseResponce<IEnumerable<Order>> { StatusCode = HttpStatusCode.OK, Data = orderList };
+                var orderDTOs = mapper.Map<List<OrderDTO>>(orderList);
+                return new BaseResponce<IEnumerable<OrderDTO>> { StatusCode = HttpStatusCode.OK, Data = orderDTOs };
             }
             catch (ArgumentNullException ex)
             {
-                return new BaseResponce<IEnumerable<Order>> { StatusCode = HttpStatusCode.NotFound, Description = ex.Message };
+                return new BaseResponce<IEnumerable<OrderDTO>> { StatusCode = HttpStatusCode.NotFound, Description = "Заказы не найдены" };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<IEnumerable<Order>> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
+                return new BaseResponce<IEnumerable<OrderDTO>> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
             }
         }
 
-        public async Task<IResponce<Order>> GetByIdAsync(Guid id)
+        public async Task<IResponce<OrderDTO>> GetByIdAsync(Guid id)
         {
             try
             {
                 Order order = await orders.GetById(id);
-                return new BaseResponce<Order> {  StatusCode=HttpStatusCode.OK, Data=order };
+                OrderDTO orderDTO = mapper.Map<OrderDTO>(order);
+                return new BaseResponce<OrderDTO> {  StatusCode=HttpStatusCode.OK, Data= orderDTO };
             }
             catch (ArgumentNullException ex)
             {
-                return new BaseResponce<Order> { StatusCode=HttpStatusCode.NotFound, Description=ex.Message };
+                return new BaseResponce<OrderDTO> { StatusCode=HttpStatusCode.NotFound, Description=ex.Message };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<Order> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
+                return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
             }
         }
 
-        public async Task<IResponce<Order>> UpdateAsync(Order order)
+        public async Task<IResponce<OrderDTO>> UpdateAsync(OrderDTO order)
         {
             try
             {
-                await orders.Update(order);
-                return new BaseResponce<Order> { StatusCode = HttpStatusCode.OK, Data = order };
+                Order updatedOrder = mapper.Map<Order>(order);
+                await orders.Update(updatedOrder);
+                order = mapper.Map<OrderDTO>(updatedOrder);
+                return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.OK, Data = order };
             }
             catch (ArgumentNullException ex)
             {
-                return new BaseResponce<Order> { StatusCode = HttpStatusCode.NotFound, Description = ex.Message };
+                return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.NotFound, Description = ex.Message };
             }
             catch (InvalidOperationException ex)
             {
-                return new BaseResponce<Order> { StatusCode = HttpStatusCode.NotModified, Description = ex.Message };
+                return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.NotModified, Description = ex.Message };
             }
             catch (Exception ex)
             {
-                return new BaseResponce<Order> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
+                return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.BadRequest, Description = ex.Message };
             }
         }
     }

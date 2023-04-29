@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Orders.Application.Models.DTOs;
 using Orders.WebApi.Models.ViewModels;
 using Oreders.Domain.Entity;
 using Oreders.Domain.Interfaces.Services;
@@ -11,9 +12,9 @@ namespace Orders.WebApi.Controllers
 {
     public class ProductController : Controller
     {
-        readonly IProductService productService;
+        readonly IProductService<ProductDTO> productService;
         readonly IMapper mapper;
-        public ProductController(IProductService productService,IMapper mapper)
+        public ProductController(IProductService<ProductDTO> productService,IMapper mapper)
         {
             this.productService = productService;
             this.mapper = mapper;
@@ -52,7 +53,7 @@ namespace Orders.WebApi.Controllers
         {
             if(ModelState.IsValid)
             {
-                Product product = mapper.Map<Product>(model);
+                ProductDTO product = mapper.Map<ProductDTO>(model);
                 var responce = await productService.CreateAsync(product);
                 if (responce.StatusCode == HttpStatusCode.OK)
                     return Json(mapper.Map<ProductViewModel>(responce.Data));
@@ -77,7 +78,7 @@ namespace Orders.WebApi.Controllers
                 if (!Guid.TryParse(id, out productId))
                     return BadRequest();
                 model.Id = productId;
-                Product product = mapper.Map<Product>(model);
+                ProductDTO product = mapper.Map<ProductDTO>(model);
                 var responce = await productService.UpdateAsync(product);
                 if (responce.StatusCode == HttpStatusCode.OK)
                     return Ok(responce.Data);

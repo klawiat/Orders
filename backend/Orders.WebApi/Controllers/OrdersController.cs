@@ -23,49 +23,70 @@ namespace Orders.WebApi.Controllers
         [HttpGet("Orders/")]
         public async Task<ActionResult> Index()
         {
-            var responce = await orderService.GetAllAsync();
-            if (responce.StatusCode == HttpStatusCode.OK)
+            try
             {
-                List<OrderViewModel> orders = mapper.Map<List<OrderViewModel>>(responce.Data);
-                return Ok(orders);
+                var responce = await orderService.GetAllAsync();
+                if (responce.StatusCode == HttpStatusCode.OK)
+                {
+                    List<OrderViewModel> orders = mapper.Map<List<OrderViewModel>>(responce.Data);
+                    return Ok(orders);
+                }
+                else
+                    return StatusCode((int)responce.StatusCode, responce.Description);
             }
-            else
-                return StatusCode((int)responce.StatusCode, responce.Description);
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // GET: OrderController/Orders/id
         [HttpGet("Orders/{id}")]
         public async Task<ActionResult> Details([FromRoute] string id)
         {
-            Guid orderId;
-            if (!Guid.TryParse(id, out orderId))
-                return BadRequest();
-            var responce = await orderService.GetByIdAsync(orderId);
-            if (responce.StatusCode == HttpStatusCode.OK)
+            try
             {
-                OrderViewModel model = mapper.Map<OrderViewModel>(responce.Data);
-                return Ok(model);
+                Guid orderId;
+                if (!Guid.TryParse(id, out orderId))
+                    return BadRequest();
+                var responce = await orderService.GetByIdAsync(orderId);
+                if (responce.StatusCode == HttpStatusCode.OK)
+                {
+                    OrderViewModel model = mapper.Map<OrderViewModel>(responce.Data);
+                    return Ok(model);
+                }
+                else
+                    return StatusCode((int)responce.StatusCode, responce.Description);
             }
-            else
-                return StatusCode((int)responce.StatusCode, responce.Description);
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         // POST: OrderController/Orders
         [HttpPost("Orders/")]
         public async Task<ActionResult> Create([FromBody] OrderCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                OrderDTO order = mapper.Map<OrderDTO>(model);
-                var responce = await orderService.CreateAsync(order);
-                if (responce.StatusCode == HttpStatusCode.OK)
-                    return Ok(mapper.Map<OrderViewModel>(responce.Data));
+                if (ModelState.IsValid)
+                {
+                    OrderDTO order = mapper.Map<OrderDTO>(model);
+                    var responce = await orderService.CreateAsync(order);
+                    if (responce.StatusCode == HttpStatusCode.OK)
+                        return Ok(mapper.Map<OrderViewModel>(responce.Data));
+                    else
+                        return StatusCode((int)responce.StatusCode, responce.Description);
+                }
                 else
-                    return StatusCode((int)responce.StatusCode, responce.Description);
+                {
+                    ModelState.AddModelError("", "BadRequest");
+                    return BadRequest();
+                }
             }
-            else
+            catch (Exception)
             {
-                ModelState.AddModelError("", "BadRequest");
                 return BadRequest();
             }
         }
@@ -74,24 +95,31 @@ namespace Orders.WebApi.Controllers
         [HttpPut("Orders/{id}")]
         public async Task<ActionResult> Edit([FromRoute] string id, [FromBody] OrderEditViewModel model)
         {
-            Guid orderId;
-            if (!Guid.TryParse(id, out orderId))
-                return BadRequest();
-            model.id = orderId;
-            if (ModelState.IsValid)
+            try
             {
-                OrderDTO order = mapper.Map<OrderDTO>(model);
-                var responce = await orderService.UpdateAsync(order);
-                if (responce.StatusCode == HttpStatusCode.OK)
+                Guid orderId;
+                if (!Guid.TryParse(id, out orderId))
+                    return BadRequest();
+                model.id = orderId;
+                if (ModelState.IsValid)
                 {
-                    return Ok(mapper.Map<OrderViewModel>(order));
+                    OrderDTO order = mapper.Map<OrderDTO>(model);
+                    var responce = await orderService.UpdateAsync(order);
+                    if (responce.StatusCode == HttpStatusCode.OK)
+                    {
+                        return Ok(mapper.Map<OrderViewModel>(order));
+                    }
+                    else
+                        return StatusCode((int)responce.StatusCode, responce.Description);
                 }
                 else
-                    return StatusCode((int)responce.StatusCode, responce.Description);
+                {
+                    ModelState.AddModelError("", "BadRequest");
+                    return BadRequest();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "BadRequest");
                 return BadRequest();
             }
         }
@@ -100,14 +128,22 @@ namespace Orders.WebApi.Controllers
         [HttpDelete("Orders/{id}")]
         public async Task<ActionResult> Delete([FromRoute] string id)
         {
-            Guid orderId;
-            if (!Guid.TryParse(id, out orderId))
+            try
+            {
+                Guid orderId;
+                if (!Guid.TryParse(id, out orderId))
+                    return BadRequest();
+                var responce = await orderService.DeleteAsync(orderId);
+                if (responce.StatusCode == HttpStatusCode.OK)
+                    return Ok();
+                else
+                    return StatusCode((int)responce.StatusCode, responce.Description);
+            }
+            catch (Exception)
+            {
                 return BadRequest();
-            var responce = await orderService.DeleteAsync(orderId);
-            if (responce.StatusCode == HttpStatusCode.OK)
-                return Ok();
-            else
-                return StatusCode((int)responce.StatusCode, responce.Description);
+            }
+            
         }
     }
 }

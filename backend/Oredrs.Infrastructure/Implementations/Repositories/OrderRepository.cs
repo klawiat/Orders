@@ -6,6 +6,7 @@ using Oreders.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -100,14 +101,26 @@ namespace Oredrs.Infrastructure.Implementations.Repositories
             if (entity.Relations.Where(x => x.Count <= 0).Any())
                 throw new InvalidOperationException("Нельзя добавить количество товаров меньше 0");
             entity.Created = order.Created;
-            orders.Update(entity);
+            List<Relation> oldRelations = await relations.Where(x => x.OrderId == entity.Id).ToListAsync();
+            foreach (var relation in oldRelations)
+            {
+                relations.Remove(relation);
+            }
+            //List<Relation> newRelations = new List<Relation>();
             foreach (var relation in entity.Relations)
             {
                 relation.OrderId = entity.Id;
                 if (await products.FirstOrDefaultAsync(x => x.Id == relation.ProductId) is null)
                     throw new ArgumentNullException("Товар не найден");
+                /*if(!relations.Any(x=>x.OrderId==relation.OrderId&&x.ProductId==relation.ProductId))
+                {
+                    await relations.AddAsync(relation);
+                    newRelations.Add(relation);
+                }*/
             }
-            relations.UpdateRange(entity.Relations);
+            //await context.SaveChangesAsync();
+            orders.Update(entity);
+            await relations.AddRangeAsync(entity.Relations);
             await context.SaveChangesAsync();
             return entity;
         }

@@ -79,7 +79,7 @@ backend/Orders.WebApi/bin/publish/net6.0/Orders.WebApi.exe
     }
   },
   "AllowedHosts": "*",
-+  "ConnectionStrings": { "DefaultConnection": "{Строка подключения}" }
++ "ConnectionStrings": { "DefaultConnection": "{Строка подключения}" }
 }
 
 ```

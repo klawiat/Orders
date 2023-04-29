@@ -9,7 +9,6 @@ namespace Orders.WebApi.Models.ViewModels
 {
     public class OrderEditViewModel
     {
-        public Guid id { get; set; }
         [Required]
         public string status { get; set; }
         [Required]

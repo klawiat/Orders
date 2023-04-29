@@ -99,10 +99,10 @@ namespace Orders.WebApi.Controllers
                 Guid orderId;
                 if (!Guid.TryParse(id, out orderId))
                     return BadRequest();
-                model.id = orderId;
                 if (ModelState.IsValid)
                 {
                     OrderDTO order = mapper.Map<OrderDTO>(model);
+                    order.Id = orderId;
                     var responce = await orderService.UpdateAsync(order);
                     if (responce.StatusCode == HttpStatusCode.OK)
                     {

@@ -29,11 +29,11 @@ namespace Orders.WebApi.Models
                 .ForMember(x=>x.id,opt=>opt.MapFrom(o=>o.Id));
             this.CreateMap<OrderEditViewModel, OrderDTO>()
                 .ForMember(x => x.Relations, opt => opt.MapFrom(x => x.lines))
-                .ForMember(x=>x.Status,opt=>opt.MapFrom(o=>o.status))
-                .ForMember(x=>x.Id,opt=>opt.MapFrom(o=>o.id));
+                //.ForMember(x=>x.Id,opt=>opt.MapFrom(o=>o.id))
+                .ForMember(x=>x.Status,opt=>opt.MapFrom(o=>o.status));
             this.CreateMap<OrderDTO, OrderEditViewModel>()
                 .ForMember(x => x.lines, opt => opt.MapFrom(x => x.Relations))
-                .ForMember(x => x.id, opt => opt.MapFrom(o => o.Id))
+                //.ForMember(x => x.id, opt => opt.MapFrom(o => o.Id))
                 .ForMember(x=>x.status,opt=>opt.MapFrom(o=>o.Status));
             this.CreateMap<OrderDTO, OrderViewModel>()
                 .ForMember(x => x.lines, opt => opt.MapFrom(x => x.Relations))

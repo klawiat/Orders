@@ -31,8 +31,8 @@ namespace Orders.Application.Services
         {
             try
             {
-                if (order.Relations is null && !order.Relations.Any())
-                    throw new ArgumentNullException("Заказ не может быть пустым");
+                if (order.Relations is null || !order.Relations.Any())
+                    throw new ArgumentNullException("Relation",message:"Заказ не может быть пустым");
                 if (order.Relations.Any(x => x.Count < 1))
                     throw new InvalidDataException("Количество не может быть меньше 1");
                 Order newOrder = mapper.Map<Order>(order);
@@ -113,15 +113,18 @@ namespace Orders.Application.Services
                 if (oldOrder is null)
                     return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.NotFound, Description = "Заказ не найден" };
                 if ((int)oldOrder.Status>=(int)Status.Paid)
-                    return new BaseResponce<OrderDTO> { StatusCode=HttpStatusCode.NotModified, Description =$"Нельзя редактировать заказ в статусе {oldOrder.Status.GetDisplayName()}"};
+                    return new BaseResponce<OrderDTO> { StatusCode=HttpStatusCode.Forbidden, Description =$"Нельзя редактировать заказ в статусе {oldOrder.Status.GetDisplayName()}"};
                 if (newOrder.Relations.Any(x => x.Count < 1))
                     return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.BadRequest, Description = "Нельзя добавить меньше 1 товара" };
+                if (newOrder.Relations is null || !newOrder.Relations.Any())
+                    return new BaseResponce<OrderDTO> { StatusCode=HttpStatusCode.BadRequest,Description="Нельзя создать пустой заказ"};
                 foreach(var rel in newOrder.Relations)
                 {
                     Product product = await products.GetById(rel.ProductId);
                     if (product is null)
                         return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.NotFound, Description = "Товар не найден" };
                 }
+                newOrder.Created = oldOrder.Created;
                 await orders.Update(newOrder);
                 order = mapper.Map<OrderDTO>(newOrder);
                 return new BaseResponce<OrderDTO> { StatusCode = HttpStatusCode.OK, Data = order };

@@ -4,7 +4,7 @@ namespace Orders.WebApi.Models.ViewModels
 {
     public class OrderCreateViewModel
     {
-        public Guid Id { get; set; }
-        public List<RelationViewModel> Lines { get; set; }
+        public Guid id { get; set; }
+        public List<RelationViewModel> lines { get; set; }
     }
 }

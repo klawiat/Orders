@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Orders.Application.Models.DTOs;
 using Orders.Application.Services;
 using Oreders.Domain.Entity;
 using Oreders.Domain.Interfaces;
@@ -14,10 +15,6 @@ namespace Orders.Application.Initialize
 {
     public static class Initializer
     {
-        public static string GetStr()
-        {
-            return "";
-        }
         public static void InitializeRepository(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Product>,ProductRepository>();
@@ -25,8 +22,8 @@ namespace Orders.Application.Initialize
         }
         public static void InitializeServices (this IServiceCollection services)
         {
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IOrderService,OrderService>();
+            services.AddScoped<IProductService<ProductDTO>, ProductService>();
+            services.AddScoped<IOrderService<OrderDTO>,OrderService>();
         }
     }
 }

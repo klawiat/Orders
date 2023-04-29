@@ -23,7 +23,7 @@ namespace Oredrs.Infrastructure
             modelBuilder.Entity<Relation>().HasOne(e => e.Product).WithMany(x => x.Relations).HasForeignKey(x => x.ProductId);
 
             //Установка свойств таблицы заказов
-            modelBuilder.Entity<Order>().Property(x=>x.Created).HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Order>().Property(x=>x.Created).HasDefaultValueSql("timezone('utc', now())")/*.IsRequired()*/;
             modelBuilder.Entity<Order>().Property(x=>x.IsDeleted).HasDefaultValue(false);
             modelBuilder.Entity<Order>().Property(x=>x.Status).HasDefaultValue(Status.New);
 
@@ -34,9 +34,9 @@ namespace Oredrs.Infrastructure
             //
             Guid guidProduct = Guid.NewGuid();
             modelBuilder.Entity<Product>().HasData(
-                    new Product() { Id=guidProduct,Name="RandomName"},
-                    new Product() { Id = Guid.NewGuid(), Name = "RandomName1" },
-                    new Product() { Id = Guid.NewGuid(), Name = "RandomName2" }
+                    new Product() { Id=guidProduct,Name="Ложки"},
+                    new Product() { Id = Guid.NewGuid(), Name = "Вилки" },
+                    new Product() { Id = Guid.NewGuid(), Name = "Ножи" }
                 );
         }
     }

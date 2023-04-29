@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oreders.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +18,14 @@ namespace Oreders.Domain.Extensions
                 .First()
                 .GetCustomAttribute<DisplayAttribute>()
                 ?.GetName() ?? "Неопределенный";
+        }
+        public static Status ToEnum(this string status)
+        {
+            Status converted;
+            if (Enum.TryParse(status, true, out converted))
+                return converted;
+            else
+                return Status.New;
         }
     }
 }

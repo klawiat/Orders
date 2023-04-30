@@ -38,7 +38,8 @@
  git clone https://github.com/klawiat/Orders.git
 ```
 ### Первый способ (Docker)
-Из папки проекта выполнить команду:
+1. Мезменить название файла .envtemplate на .env
+2. Из папки проекта выполнить команду:
 ```sh
  docker compose up
 ```

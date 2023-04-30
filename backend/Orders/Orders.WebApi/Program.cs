@@ -20,7 +20,7 @@ namespace Orders.WebApi
             #region Строка подключения к бд
             string host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
             string port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
-            string database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "OrdersDB";
+            string database = Environment.GetEnvironmentVariable("POSTGRES_DB") ?? "OrdersTestTask";
             string username = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
             string password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "Klawiat1324";
             string connection = $"Host={host};Port={port};Database={database};Username={username};Password={password};";

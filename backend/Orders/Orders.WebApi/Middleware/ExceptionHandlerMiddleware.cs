@@ -53,7 +53,7 @@ namespace Orders.WebApi.Middleware
                     responce = json.Serialize(new { message = "Данные не соответствуют контракту" }, jsonOptions);
                     break;
                 case InvalidOperationException ex:
-                    statusCode = HttpStatusCode.Forbidden;
+                    statusCode = HttpStatusCode.BadRequest;
                     responce = json.Serialize(new { message = ex.Message });
                     break;
                 case NoDataException ex:

@@ -6,7 +6,6 @@ using Orders.Infrastructure;
 using Orders.WebApi.Converters;
 using Orders.WebApi.Middleware;
 using Orders.WebApi.Models.MappingProfiles;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 

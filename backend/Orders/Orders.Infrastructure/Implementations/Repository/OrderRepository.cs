@@ -6,8 +6,10 @@ namespace Orders.Infrastructure.Implementations.Repository
 {
     public class OrderRepository : IOrderRepository
     {
+        #region Свойства
         private readonly OrdersDBContext context;
         private readonly DbSet<Order> orders;
+        #endregion
         public OrderRepository(OrdersDBContext context)
         {
             this.context = context;

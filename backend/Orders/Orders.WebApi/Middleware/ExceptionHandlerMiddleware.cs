@@ -11,8 +11,10 @@ namespace Orders.WebApi.Middleware
 {
     public class ExceptionHandlerMiddleware
     {
+        #region Свойства
         private readonly RequestDelegate _next;
         private readonly JsonSerializerOptions jsonOptions;
+        #endregion
         public ExceptionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -41,6 +43,10 @@ namespace Orders.WebApi.Middleware
                 case ValidationException ex:
                     statusCode = HttpStatusCode.BadRequest;
                     responce = json.Serialize(ex.Errors.Select(error => new { property = error.PropertyName, message = error.ErrorMessage }), jsonOptions);
+                    break;
+                case ConflictException ex:
+                    statusCode = HttpStatusCode.Conflict;
+                    responce = json.Serialize(new { message = ex.Message }, jsonOptions);
                     break;
                 case ArgumentNullException ex:
                     statusCode = HttpStatusCode.BadRequest;

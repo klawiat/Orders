@@ -11,9 +11,11 @@ namespace Orders.Application.Services
 {
     public class OrderService : IOrderService
     {
+        #region Свойства
         private readonly IOrderRepository orders;
         private readonly IMapper mapper;
         private readonly IValidator<OrderDTO> validator;
+        #endregion
         public OrderService(IOrderRepository orders, IMapper mapper, IValidator<OrderDTO> validator)
         {
             this.orders = orders;
@@ -24,6 +26,7 @@ namespace Orders.Application.Services
         public async Task<OrderDTO> CreateOrder(OrderDTO orderDTO)
         {
             validator.ValidateAndThrow(orderDTO);
+            if (await orders.GetWithoutProductsAsync(orderDTO.Id) is not null) throw new ConflictException("Заказ", $"с идентификатором {orderDTO.Id} уже существует");
             Order order = mapper.Map<Order>(orderDTO);
             await orders.CreateAsync(order);
             return mapper.Map<OrderDTO>(order);
@@ -33,8 +36,7 @@ namespace Orders.Application.Services
         {
             Order order = await orders.GetWithoutProductsAsync(id);
             if (order is null) throw new NoDataException($"Заказ с идентификатором {id} не найден");
-            if ((int)order.Status > (int)Status.Paid)
-                throw new InvalidOperationException($"Заказ в статусе {order.Status.ToString()} нельзя удалить");
+            if ((int)order.Status > (int)Status.Paid) throw new InvalidOperationException($"Заказ в статусе {order.Status} нельзя удалить");
             await orders.DeleteAsync(id);
         }
 
